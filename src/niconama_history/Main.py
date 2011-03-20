@@ -30,7 +30,7 @@ def main():
                 if messages is None:
                     continue
 
-                history.setdefault(date, {'year': [], 'month':[], 'day': [] })
+                history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
                 if isinstance(messages, str):
                     history[date]['day'].append(messages)
                 elif isinstance(messages, list):
@@ -44,7 +44,7 @@ def main():
                 if messages is None:
                     continue
 
-                history.setdefault(date, {'year': [], 'month':[], 'day': [] })
+                history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
                 if isinstance(messages, str):
                     history[date]['month'].append(messages)
                 elif isinstance(messages, list):
@@ -58,27 +58,48 @@ def main():
                 if messages is None:
                     continue
 
-                history.setdefault(date, {'year': [], 'month':[], 'day': [] })
+                history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
                 if isinstance(messages, str):
-                    history[date]['month'].append(messages)
+                    history[date]['year'].append(messages)
                 elif isinstance(messages, list):
-                    history[date]['month'].extend(messages)
+                    history[date]['year'].extend(messages)
 
-        print
+        print '全体の集計を行っています。'
+
+        for date, rows in commonDb.selectAll():
+            for plugin in plugins:
+                messages = plugin.analyzeAll(rows)
+                if messages is None:
+                    continue
+
+                history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
+                if isinstance(messages, str):
+                    history[date]['all'].append(messages)
+                elif isinstance(messages, list):
+                    history[date]['all'].extend(messages)
 
         for key in sorted(history.keys()):
-            for post in history.get(key)['day']:
-                if post is not None:
-                    print '{0}年{1}月{2}日'.format(key.year, key.month, key.day)
+            date = history.get(key)
+
+            if len(date['day']) > 0:
+                print '{0}年{1}月{2}日'.format(key.year, key.month, key.day)
+                for post in date['day']:
                     print post
 
-            for post in history.get(key)['month']:
+            if len(date['month']) > 0:
                 print '{0}年{1}月のまとめ'.format(key.year, key.month)
-                print post
+                for post in date['month']:
+                    print post
 
-            for post in history.get(key)['year']:
+            if len(date['year']) > 0:
                 print '{0}年のまとめ'.format(key.year)
-                print post
+                for post in date['year']:
+                    print post
+
+            if len(date['all']) > 0:
+                print '放送のまとめ'.format(key.year)
+                for post in date['all']:
+                    print post
 
         print
 

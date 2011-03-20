@@ -7,6 +7,8 @@ Created on 2011/03/20
 from niconama_history.PluginBase import PluginBase
 
 class commentFilter(PluginBase):
+    """常連さんの出現を抽出するプラグインです。
+    """
 
     def __init__(self, db):
         PluginBase.__init__(self)
@@ -25,21 +27,23 @@ class commentFilter(PluginBase):
                 count(user_id) > {}
             ;
         """.format(1000)
-        self.regularList = db.connect.execute(sql).fetchall()
+        self.regularSet = set(db.connect.execute(sql).fetchall())
 
     @property
     def name(self):
         return 'FirstTimer'
 
     def analyzeDay(self, rows):
+        messages = []
         for row in rows:
-            ragulars = filter(lambda (userId, name): userId == row.userId, self.regularList)
+            ragulars = filter(lambda (userId, name): userId == row.userId, self.regularSet)
             if len(ragulars) == 0:
-                return
+                continue
 
-            for regular in self.regularList:
-                self.regularList.remove(regular)
-            return map(lambda (userId, name): '{0}が初登場！'.format(name), self.regularList)
+            self.regularSet -= set(ragulars)
+            messages.extend(map(lambda (userId, name): '{0}が初登場！'.format(name), ragulars))
+
+        return messages
 
 if __name__ == '__main__':
     pass

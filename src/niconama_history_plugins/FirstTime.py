@@ -7,6 +7,8 @@ Created on 2011/03/20
 from niconama_history.PluginBase import PluginBase
 
 class commentFilter(PluginBase):
+    """放送開始日を抽出するプラグインです。
+    """
 
     def __init__(self, db):
         PluginBase.__init__(self)
@@ -14,7 +16,7 @@ class commentFilter(PluginBase):
 
     @property
     def name(self):
-        return 'FirstTimer'
+        return 'FirstTime'
 
     def analyzeDay(self, rows):
         if self.__flag:

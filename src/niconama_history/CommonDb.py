@@ -45,6 +45,22 @@ class CommonDb(object):
         self.connect.execute('CREATE INDEX datetime_index ON comment (datetime);')
         self.connect.commit()
 
+    def selectAll(self):
+        sql = """
+            SELECT
+                community_id
+                ,user_id
+                ,name
+                ,message
+                ,option
+                ,datetime
+            FROM
+                comment
+            ;
+        """
+
+        return [(datetime(9999,12,31), map(lambda comment: Row(comment), self.connect.execute(sql)))]
+
     def selectYears(self):
         return self._selectTerm('%Y')
 
@@ -67,7 +83,7 @@ class CommonDb(object):
             ;
         """.format(termFormat)
 
-        terms = self.connect.execute(sql)
+        terms = self.connect.execute(sql).fetchall()
 
         sql = """
             SELECT

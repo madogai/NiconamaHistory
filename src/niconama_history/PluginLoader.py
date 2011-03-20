@@ -1,12 +1,13 @@
 #-*- coding:utf-8
-import imp
-import os
-import re
 '''
 Created on 2011/03/19
 
 @author: madguy
 '''
+import imp
+import os
+import re
+
 def load_module(module_name, basepath):
         """ モジュールをロードして返します。
         """

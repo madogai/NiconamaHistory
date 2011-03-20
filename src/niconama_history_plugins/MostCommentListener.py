@@ -17,6 +17,8 @@ from niconama_history.PluginBase import PluginBase
 """
 
 class commentFilter(PluginBase):
+    """月毎の最も発言したリスナーを抽出するプラグインです。
+    """
 
     def __init__(self, db):
         pass
