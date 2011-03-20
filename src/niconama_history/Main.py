@@ -3,7 +3,6 @@ from CommonDb import CommonDb
 from collections import defaultdict
 import DataLoader
 import PluginLoader
-import os.path
 
 def main():
     loader = DataLoader.createInstance('nwhois')
@@ -15,18 +14,13 @@ def main():
     with CommonDb() as commonDb:
         commonDb.insertComment(commentList)
 
-        print '共用DBの構築が完了しました'
+        print '共通DBの構築が完了しました。'
 
-        plugindir = 'niconama_history_plugins'
-        cwd = os.getcwd()
-        moduledir = os.path.join(cwd, plugindir)
-        plugins = PluginLoader.load_plugins(moduledir)
+        plugins = map(lambda plugin: plugin.commentFilter(commonDb), PluginLoader.load_plugins('niconama_history_plugins'))
 
         print 'プラグインの読み込みが完了しました。'
 
         history = defaultdict(list)
-
-        plugins = map(lambda plugin: plugin.commentFilter(commonDb), plugins)
 
         print '日毎の集計を行っています。'
 
@@ -70,9 +64,13 @@ def main():
                 elif isinstance(messages, list):
                     history[date]['month'].extend(messages)
 
+        print
+
         for key in sorted(history.keys()):
             for post in history.get(key)['day']:
-                print post
+                if post is not None:
+                    print '{0}年{1}月{2}日'.format(key.year, key.month, key.day)
+                    print post
 
             for post in history.get(key)['month']:
                 print '{0}年{1}月のまとめ'.format(key.year, key.month)
@@ -81,6 +79,8 @@ def main():
             for post in history.get(key)['year']:
                 print '{0}年のまとめ'.format(key.year)
                 print post
+
+        print
 
 if __name__ == '__main__':
     main()

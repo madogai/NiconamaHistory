@@ -13,9 +13,13 @@ def load_module(module_name, basepath):
         fileHandler, fileName, description = imp.find_module(module_name, [basepath])
         return imp.load_module(module_name, fileHandler, fileName, description)
 
-def load_plugins(basepath):
+def load_plugins(plugindir):
         """ Pluginをロードしてリストにして返します。
         """
+
+        cwd = os.getcwd()
+        basepath = os.path.join(cwd, plugindir)
+
         pluginList = []
         for fileName in os.listdir(basepath):
             try:

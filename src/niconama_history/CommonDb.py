@@ -43,7 +43,6 @@ class CommonDb(object):
             self.connect.execute(sqlBase, (communityId, userId, name, message, option, datetime))
 
         self.connect.execute('CREATE INDEX datetime_index ON comment (datetime);')
-
         self.connect.commit()
 
     def selectYears(self):

@@ -5,6 +5,7 @@ Created on 2011/03/13
 @author: madguy
 '''
 from collections import defaultdict
+from niconama_history.PluginBase import PluginBase
 
 """
     community_id TEXT,
@@ -15,16 +16,14 @@ from collections import defaultdict
     datetime TEXT
 """
 
-class commentFilter(object):
+class commentFilter(PluginBase):
 
     def __init__(self, db):
         pass
 
-    def getName(self):
+    @property
+    def name(self):
         return 'MostCommentListener'
-
-    def analyzeDay(self, rows):
-        pass
 
     def analyzeMonth(self, rows):
         userDict = defaultdict(int)
@@ -35,12 +34,6 @@ class commentFilter(object):
         userName = max(userDict, key = lambda x: userDict.get(x))[1]
         message = '一番発言したのは{0}さんでした。'.format(userName)
         return message
-
-    def analyzeYear(self, rows):
-        pass
-
-    def analyzeAll(self, rows):
-        pass
 
 if __name__ == '__main__':
     pass
