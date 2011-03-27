@@ -1,17 +1,20 @@
 #-*- coding:utf-8
 from CommonDb import CommonDb
 from collections import defaultdict
-import DataLoader
+import CommentViewer
 import PluginLoader
 
-def main():
-    loader = DataLoader.createInstance('nwhois')
-    if loader == None:
-        pass
+def main(communityId, type):
+    """メイン関数
+    各種コメビュログを読み込んで
+    共通DBにいれて
+    解析して
+    吐き出します。
+    """
 
-    commentList = loader.load('co317507')
-
+    loader = CommentViewer.createInstance(type)
     with CommonDb() as commonDb:
+        commentList = loader.loadComment(communityId)
         commonDb.insertComment(commentList)
 
         print '共通DBの構築が完了しました。'
@@ -27,7 +30,7 @@ def main():
         for date, rows in commonDb.selectDays():
             for plugin in plugins:
                 messages = plugin.analyzeDay(rows)
-                if messages is None:
+                if not messages:
                     continue
 
                 history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
@@ -41,7 +44,7 @@ def main():
         for date, rows in commonDb.selectMonthes():
             for plugin in plugins:
                 messages = plugin.analyzeMonth(rows)
-                if messages is None:
+                if not messages:
                     continue
 
                 history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
@@ -55,7 +58,7 @@ def main():
         for date, rows in commonDb.selectYears():
             for plugin in plugins:
                 messages = plugin.analyzeYear(rows)
-                if messages is None:
+                if not messages:
                     continue
 
                 history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
@@ -69,7 +72,7 @@ def main():
         for date, rows in commonDb.selectAll():
             for plugin in plugins:
                 messages = plugin.analyzeAll(rows)
-                if messages is None:
+                if not messages:
                     continue
 
                 history.setdefault(date, {'year': [], 'month':[], 'day': [], 'all': [] })
@@ -85,16 +88,19 @@ def main():
                 print '{0}年{1}月{2}日'.format(key.year, key.month, key.day)
                 for post in date['day']:
                     print post
+                print
 
             if len(date['month']) > 0:
                 print '{0}年{1}月のまとめ'.format(key.year, key.month)
                 for post in date['month']:
                     print post
+                print
 
             if len(date['year']) > 0:
                 print '{0}年のまとめ'.format(key.year)
                 for post in date['year']:
                     print post
+                print
 
             if len(date['all']) > 0:
                 print '放送のまとめ'.format(key.year)
@@ -104,4 +110,4 @@ def main():
         print
 
 if __name__ == '__main__':
-    main()
+    main('co317507', 'nwhois')

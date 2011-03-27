@@ -6,9 +6,12 @@ import sqlite3
 
 class CommonDb(object):
     def __enter__(self):
+        """メモリ上に共通DBを構築します。
+        """
+
         connect = sqlite3.connect(':memory:')
 
-        createDbSql = u'''
+        createDbSql = """
             CREATE TABLE comment (
                 community_id TEXT,
                 user_id TEXT,
@@ -17,12 +20,15 @@ class CommonDb(object):
                 option TEXT,
                 datetime TEXT
             );
-        '''
+        """
         connect.execute(createDbSql)
         self.connect = connect
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        """データベースをクローズします。
+        """
+
         self.connect.close()
 
     def insertComment(self, commentList):
@@ -62,13 +68,16 @@ class CommonDb(object):
         return [(datetime(9999,12,31), map(lambda comment: Row(comment), self.connect.execute(sql)))]
 
     def selectYears(self):
-        return self._selectTerm('%Y')
+        terms = self._selectTerm('%Y')
+        return self._selectDates(terms)
 
     def selectMonthes(self):
-        return self._selectTerm('%Y-%m')
+        terms = self._selectTerm('%Y-%m')
+        return self._selectDates(terms)
 
     def selectDays(self):
-        return self._selectTerm('%Y-%m-%d')
+        terms = self._selectTerm('%Y-%m-%d')
+        return self._selectDates(terms)
 
     def _selectTerm(self, termFormat):
         sql = """
@@ -83,7 +92,18 @@ class CommonDb(object):
             ;
         """.format(termFormat)
 
-        terms = self.connect.execute(sql).fetchall()
+        return self.connect.execute(sql).fetchall()
+
+    def _selectDates(self, terms):
+        def termToDate(term):
+            if re.match('\d{4}$', term):
+                return datetime.strptime(term + '-12-31', '%Y-%m-%d')
+            elif re.match('\d{4}-\d{2}$', term):
+                (year, month) = term.split('-')
+                dayCount = calendar.monthrange(int(year), int(month))[1]
+                return datetime(int(year), int(month), dayCount)
+            else:
+                return datetime.strptime(term, '%Y-%m-%d')
 
         sql = """
             SELECT
@@ -100,17 +120,7 @@ class CommonDb(object):
             ;
         """
 
-        return map(lambda (term,): (self._termToDate(term), map(lambda comment: Row(comment), self.connect.execute(sql.format(term)))), terms)
-
-    def _termToDate(self, term):
-        if re.match('\d{4}$', term):
-            return datetime.strptime(term + '-12-31', '%Y-%m-%d')
-        elif re.match('\d{4}-\d{2}$', term):
-            (year, month) = term.split('-')
-            dayCount = calendar.monthrange(int(year), int(month))[1]
-            return datetime(int(year), int(month), dayCount)
-        else:
-            return datetime.strptime(term, '%Y-%m-%d')
+        return map(lambda (term,): (termToDate(term), map(lambda comment: Row(comment), self.connect.execute(sql.format(term)))), terms)
 
 class Row(object):
 
