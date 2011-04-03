@@ -19,6 +19,10 @@ NiconamaHistory.py -c coXXXXXX -o output.txt
 詳しくは以下のコマンドで。
 NiconamaHistory.py -h
 
+Version
+---
+0.1
+
 Advertisement
 ---
 
