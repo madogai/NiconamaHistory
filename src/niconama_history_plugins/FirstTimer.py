@@ -40,7 +40,7 @@ class CommentFilter(PluginBase):
             ragulars = filter(lambda (userId, name): userId == row.userId, self.regularSet)
             if len(ragulars) > 0:
                 self.regularSet -= set(ragulars)
-                messages.extend(map(lambda (userId, name): '{0}が初登場！'.format(name), ragulars))
+                messages.extend(map(lambda (userId, name): u'{0}が初登場'.format(name), ragulars))
 
         return messages
 

@@ -21,7 +21,7 @@ class CommentFilter(PluginBase):
     def analyzeDay(self, rows):
         if self.__flag:
             self.__flag = False
-            return '放送を開始しました！'
+            return u'放送を開始しました！'
 
 if __name__ == '__main__':
     pass

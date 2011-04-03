@@ -12,6 +12,7 @@ class CommonDb(object):
         """
 
         connect = sqlite3.connect(':memory:')
+        connect.text_factory = sqlite3.OptimizedUnicode
 
         createDbSql = """
             CREATE TABLE comment (
@@ -52,8 +53,6 @@ class CommonDb(object):
 
         self.connect.execute('CREATE INDEX datetime_index ON comment (datetime);')
         self.connect.commit()
-
-        print '共通DBの構築が完了しました。'
 
     def selectAll(self):
         sql = """

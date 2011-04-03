@@ -9,13 +9,15 @@ import os
 import re
 
 def load_module(module_name, basepath):
-        """ モジュールをロードして返します。
+        """
+        モジュールをロードして返します。
         """
         fileHandler, fileName, description = imp.find_module(module_name, [basepath])
         return imp.load_module(module_name, fileHandler, fileName, description)
 
 def load_plugins(plugindir):
-        """ Pluginをロードしてリストにして返します。
+        """
+        Pluginをロードしてリストにして返します。
         """
 
         cwd = os.getcwd()

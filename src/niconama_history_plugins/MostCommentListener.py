@@ -35,7 +35,7 @@ class CommentFilter(PluginBase):
             userDict[(row.userId, row.name)] += 1
 
         userName = max(userDict, key = lambda x: userDict.get(x))[1]
-        message = '一番発言したのは{0}さんでした。'.format(userName)
+        message = u'一番発言したのは{0}さんでした。'.format(userName)
         return message
 
 if __name__ == '__main__':

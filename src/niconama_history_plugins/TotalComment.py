@@ -20,7 +20,7 @@ class CommentFilter(PluginBase):
         return 'TotalComment'
 
     def analyzeAll(self, rows):
-        return 'コメント数の総計は{0}件でした。'.format(len(rows))
+        return u'コメント数の総計は{0}件でした。'.format(len(rows))
 
 if __name__ == '__main__':
     pass

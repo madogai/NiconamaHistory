@@ -14,12 +14,20 @@ def createInstance(type):
     """
     instance = dict(nwhois=Nwhois, ncv=NCV, anko=GissiriAnko).get(type)
     if instance == None:
-        raise ArgumentError('適切なコメントビューアを選択できません。')
+        raise ArgumentError(u'適切なコメントビューアを選択できません。')
 
     return instance()
 
-def initializeConfig():
-    config = r"""[nwhois]
+class CommentViewer(object):
+    def __init__(self):
+        if os.path.exists('NiconamaHistory.conf') == False:
+            self._initializeConfig()
+
+        self.config = SafeConfigParser()
+        self.config.read('NiconamaHistory.conf')
+
+    def _initializeConfig(self):
+        config = r"""[nwhois]
 Comment={LOCALAPPDATA}\nwhois\data\database\log3.sqlite
 
 [ncv]
@@ -30,13 +38,8 @@ UserSetting={APPDATA}\posite-c\\NiconamaCommentViewer\UserSetting.xml
 Comment={USERPROFILE}\Documents\ギッシリアンコちゃん\log\
 """
 
-    with open('NiconamaHistory.conf', 'w') as handle:
-        handle.write(config)
-
-class CommentViewer(object):
-    def __init__(self):
-        self.config = SafeConfigParser()
-        self.config.read('NiconamaHistory.conf')
+        with open('NiconamaHistory.conf', 'w') as handle:
+            handle.write(config)
 
 class Nwhois(CommentViewer):
     def saveConfig(self, options):
