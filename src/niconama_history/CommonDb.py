@@ -5,8 +5,10 @@ import re
 import sqlite3
 
 class CommonDb(object):
+
     def __enter__(self):
-        """メモリ上に共通DBを構築します。
+        """
+        メモリ上に共通DBを構築します。
         """
 
         connect = sqlite3.connect(':memory:')
@@ -26,9 +28,9 @@ class CommonDb(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        """データベースをクローズします。
         """
-
+        データベースをクローズします。
+        """
         self.connect.close()
 
     def insertComment(self, commentList):
@@ -51,6 +53,8 @@ class CommonDb(object):
         self.connect.execute('CREATE INDEX datetime_index ON comment (datetime);')
         self.connect.commit()
 
+        print '共通DBの構築が完了しました。'
+
     def selectAll(self):
         sql = """
             SELECT
@@ -65,7 +69,7 @@ class CommonDb(object):
             ;
         """
 
-        return [(datetime(9999,12,31), map(lambda comment: Row(comment), self.connect.execute(sql)))]
+        return [(datetime(9999,12,31), map(lambda comment: Row(*comment), self.connect.execute(sql)))]
 
     def selectYears(self):
         terms = self._selectTerm('%Y')
@@ -120,17 +124,17 @@ class CommonDb(object):
             ;
         """
 
-        return map(lambda (term,): (termToDate(term), map(lambda comment: Row(comment), self.connect.execute(sql.format(term)))), terms)
+        return map(lambda (term,): (termToDate(term), map(lambda comment: Row(*comment), self.connect.execute(sql.format(term)))), terms)
 
 class Row(object):
 
-    def __init__(self, row):
-        self.communityId = row[0]
-        self.userId = row[1]
-        self.name = row[2]
-        self.message = row[3]
-        self.option = row[4]
-        self.datetime = row[5]
+    def __init__(self, communityId, userId, name, message, option, datetime):
+        self.communityId = communityId
+        self.userId = userId
+        self.name = name
+        self.message = message
+        self.option = option
+        self.datetime = datetime
 
 if __name__ == '__main__':
     import doctest

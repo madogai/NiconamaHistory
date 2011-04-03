@@ -6,7 +6,7 @@ Created on 2011/03/20
 '''
 from niconama_history.PluginBase import PluginBase
 
-class commentFilter(PluginBase):
+class CommentFilter(PluginBase):
     """放送開始日を抽出するプラグインです。
     """
 

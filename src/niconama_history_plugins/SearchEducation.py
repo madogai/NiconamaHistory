@@ -3,8 +3,9 @@
 from niconama_history.PluginBase import PluginBase
 import re
 
-class commentFilter(PluginBase):
-    """放送開始日を抽出するプラグインです。
+class CommentFilter(PluginBase):
+    """
+    放送開始日を抽出するプラグインです。
     """
 
     def __init__(self, db):

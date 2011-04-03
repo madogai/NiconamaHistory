@@ -6,8 +6,9 @@ Created on 2011/03/20
 '''
 from niconama_history.PluginBase import PluginBase
 
-class commentFilter(PluginBase):
-    """コメントの統計を出力するプラグインです
+class CommentFilter(PluginBase):
+    """
+    コメントの統計を出力するプラグインです
     """
 
     def __init__(self, db):

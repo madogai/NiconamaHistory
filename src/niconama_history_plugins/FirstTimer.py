@@ -6,8 +6,9 @@ Created on 2011/03/20
 '''
 from niconama_history.PluginBase import PluginBase
 
-class commentFilter(PluginBase):
-    """常連さんの出現を抽出するプラグインです。
+class CommentFilter(PluginBase):
+    """
+    常連さんの出現を抽出するプラグインです。
     """
 
     def __init__(self, db):
