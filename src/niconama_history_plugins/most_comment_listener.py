@@ -5,16 +5,7 @@ Created on 2011/03/13
 @author: madguy
 '''
 from collections import defaultdict
-from niconama_history.PluginBase import PluginBase
-
-"""
-    community_id TEXT,
-    user_id TEXT,
-    name TEXT,
-    message TEXT,
-    option TEXT,
-    datetime TEXT
-"""
+from niconama_history.plugin_base import PluginBase
 
 class CommentFilter(PluginBase):
     """

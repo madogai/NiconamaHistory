@@ -4,7 +4,7 @@ Created on 2011/03/20
 
 @author: madguy
 '''
-from niconama_history.PluginBase import PluginBase
+from niconama_history.plugin_base import PluginBase
 
 class CommentFilter(PluginBase):
     """

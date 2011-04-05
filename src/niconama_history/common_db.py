@@ -5,7 +5,6 @@ import re
 import sqlite3
 
 class CommonDb(object):
-
     def __enter__(self):
         """
         メモリ上に共通DBを構築します。
@@ -98,15 +97,6 @@ class CommonDb(object):
         return self.connect.execute(sql).fetchall()
 
     def _selectDates(self, terms):
-        def termToDate(term):
-            if re.match('\d{4}$', term):
-                return datetime.strptime(term + '-12-31', '%Y-%m-%d')
-            elif re.match('\d{4}-\d{2}$', term):
-                (year, month) = term.split('-')
-                dayCount = calendar.monthrange(int(year), int(month))[1]
-                return datetime(int(year), int(month), dayCount)
-            else:
-                return datetime.strptime(term, '%Y-%m-%d')
 
         sql = """
             SELECT
@@ -123,7 +113,26 @@ class CommonDb(object):
             ;
         """
 
-        return map(lambda (term,): (termToDate(term), map(lambda comment: Row(*comment), self.connect.execute(sql.format(term)))), terms)
+        return map(lambda (term,): (self._termToDate(term), map(lambda comment: Row(*comment), self.connect.execute(sql.format(term)))), terms)
+
+    def _termToDate(self, term):
+        """
+        >>> instance = CommonDb()
+        >>> instance._termToDate('2000')
+        datetime.datetime(2000, 12, 31, 0, 0)
+        >>> instance._termToDate('2000-01')
+        datetime.datetime(2000, 1, 31, 0, 0)
+        >>> instance._termToDate('2000-01-01')
+        datetime.datetime(2000, 1, 1, 0, 0)
+        """
+        if re.match('\d{4}$', term):
+            return datetime.strptime('{0}-12-31'.format(term), '%Y-%m-%d')
+        elif re.match('\d{4}-\d{2}$', term):
+            (year, month) = term.split('-')
+            dayCount = calendar.monthrange(int(year), int(month))[1]
+            return datetime(int(year), int(month), dayCount)
+        else:
+            return datetime.strptime(term, '%Y-%m-%d')
 
 class Row(object):
 

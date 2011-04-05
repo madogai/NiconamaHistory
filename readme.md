@@ -5,11 +5,19 @@ License
 ---
 
 Copyright 2011, madguy
+
 MIT-style License.
+
+<http://www.opensource.org/licenses/mit-license.php>
 
 Description
 ---
-ニコニコ生放送のログを解析して放送の歴史を生成するツールです。
+ニコニコ生放送用コメントビューアのログを解析して、放送の歴史的な文章を生成するツールです。
+
+nwhois,NCV,ぎっしりあんこちゃんに対応しています。
+
+プラグインを作成することで色んなフィルターを掛けることも可能です。
+ぜひ色んなプラグインを作ってみてください！
 
 Usage
 ---
@@ -18,6 +26,12 @@ NiconamaHistory.py -c coXXXXXX -o output.txt
 
 詳しくは以下のコマンドで。
 NiconamaHistory.py -h
+
+Plugin
+---
+niconama_history_pluginsにXXX.pyファイルを追加することでプラグインを追加できます。
+
+作り方の詳細は後日記述します。
 
 Version
 ---

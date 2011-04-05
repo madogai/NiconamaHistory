@@ -6,8 +6,8 @@ Created on 2011/03/20
 '''
 
 class PluginBase(object):
-    """プラグインの基底クラスです。
-
+    """
+    プラグインの基底クラスです。
     """
     @property
     def name(self):

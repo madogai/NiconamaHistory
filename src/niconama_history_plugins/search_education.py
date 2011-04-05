@@ -1,6 +1,6 @@
 #-*- coding:utf-8
 
-from niconama_history.PluginBase import PluginBase
+from niconama_history.plugin_base import PluginBase
 import re
 
 class CommentFilter(PluginBase):

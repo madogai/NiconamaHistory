@@ -43,16 +43,10 @@ Comment={USERPROFILE}\Documents\ギッシリアンコちゃん\log\
 
 class Nwhois(CommentViewer):
     def saveConfig(self, options):
-        """
-        オプションの一部をコンフィグに書き込みます。
-        """
         if options.path:
             self.config.set(options.type, 'Comment', options.path)
 
     def loadComment(self, community):
-        """
-        コメントデータをロードします。
-        """
         self.sqlFile = re.sub('{(\\w+?)}', lambda match: os.environ[match.group(1)], self.config.get('nwhois', 'Comment'))
 
         if os.path.exists(self.sqlFile) == False:
@@ -85,18 +79,12 @@ class Nwhois(CommentViewer):
 
 class NCV(CommentViewer):
     def saveConfig(self, options):
-        """
-        オプションの一部をコンフィグに書き込みます。
-        """
         if options.path:
             self.config.set(options.type, 'Comment', options.path)
         if options.user:
             self.config.set(options.type, 'UserSetting', options.userSetting)
 
     def loadComment(self, communityId):
-        """
-        コメントデータをロードします。
-        """
         def loadUserSetting(communityId):
             userFile = re.sub('{(\\w+?)}', lambda match: os.environ[match.group(1)], self.config.get('ncv', 'UserSetting'))
             parser = BeautifulSoup(open(userFile, 'r'))
@@ -128,16 +116,10 @@ class NCV(CommentViewer):
 
 class GissiriAnko(CommentViewer):
     def saveConfig(self, options):
-        """
-        オプションの一部をコンフィグに書き込みます。
-        """
         if options.path:
             self.config.set(options.type, 'Comment', options.path)
 
     def loadComment(self, communityId):
-        """
-        コメントデータをロードします。
-        """
         def communityFilter(filePath):
             parser = BeautifulSoup(open(os.path.join(filePath), 'r'))
             return parser.find('communityid').renderContents() == communityId
