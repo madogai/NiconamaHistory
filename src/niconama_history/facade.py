@@ -58,7 +58,7 @@ def _analyze(dateCommentList, analyzer, methodName):
     """
     history = []
     for date, rows in dateCommentList:
-        messages = analyzer.__getattribute__(methodName)(rows)
+        messages = analyzer.__getattribute__(methodName)(date, rows)
         if messages:
             if isinstance(messages, str) or isinstance(messages, unicode):
                 messages = [messages]

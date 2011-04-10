@@ -13,7 +13,7 @@ class CommentFilter(PluginBase):
     def __init__(self):
         self.__flag = True
 
-    def analyzeDay(self, rows):
+    def analyzeDay(self, date, rows):
         if self.__flag:
             self.__flag = False
             return u'放送を開始しました！'

@@ -14,7 +14,7 @@ class CommentFilter(PluginBase):
     def __init__(self):
         self.__flag = True
 
-    def analyzeAll(self, rows):
+    def analyzeAll(self, date, rows):
         return u'コメント数の総計は{0}件でした。'.format(len(rows))
 
 if __name__ == '__main__':

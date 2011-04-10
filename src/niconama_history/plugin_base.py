@@ -15,14 +15,14 @@ class PluginBase(object):
     def ready(self, db):
         pass
 
-    def analyzeDay(self, rows):
+    def analyzeDay(self, date, rows):
         pass
 
-    def analyzeMonth(self, rows):
+    def analyzeMonth(self, date, rows):
         pass
 
-    def analyzeYear(self, rows):
+    def analyzeYear(self, date, rows):
         pass
 
-    def analyzeAll(self, rows):
+    def analyzeAll(self, date, rows):
         pass

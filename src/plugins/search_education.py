@@ -7,7 +7,7 @@ class CommentFilter(PluginBase):
     """
     放送開始日を抽出するプラグインです。
     """
-    def analyzeDay(self, rows):
+    def analyzeDay(self, date, rows):
         def replaceEducation(row):
             name = row.name if row.name else u'名無しさん'
             match = re.search(u'教育\\s*?[\\(（](.+?)=(.+?)[\\）)]', row.message)

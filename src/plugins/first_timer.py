@@ -28,7 +28,7 @@ class CommentFilter(PluginBase):
         """.format(1000)
         self.regularSet = set(db.connect.execute(sql).fetchall())
 
-    def analyzeDay(self, rows):
+    def analyzeDay(self, date, rows):
         messages = []
         for row in rows:
             ragulars = filter(lambda (userId, name): userId == row.userId, self.regularSet)

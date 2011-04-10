@@ -11,7 +11,7 @@ class CommentFilter(PluginBase):
     """
     月毎の最も発言したリスナーを抽出するプラグインです。
     """
-    def analyzeMonth(self, rows):
+    def analyzeMonth(self, date, rows):
         userDict = defaultdict(int)
 
         for row in filter(lambda row: (row.name is not None) and (len(row.name) > 0), rows):
