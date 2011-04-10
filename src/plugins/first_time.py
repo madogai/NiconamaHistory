@@ -10,7 +10,6 @@ class CommentFilter(PluginBase):
     """
     放送開始日を抽出するプラグインです。
     """
-
     def __init__(self):
         self.__flag = True
 

@@ -7,15 +7,15 @@ import sys
 
 def main():
     try:
-        sysEncode = sys.stdin.decode
+        sysEncode = sys.stdin.encoding
     except AttributeError:
         sysEncode = u'ascii'
 
     (options, args) = _loadOption()
     if options.community is None:
-        (communityId, viewerType) = _readInteractive()
-        options.community = communityId.decode(sysEncode)
-        options.type = viewerType.decode(sysEncode)
+        (communityId, viewerType) = _readInteractive(sysEncode)
+        options.community = communityId
+        options.type = viewerType
 
     viewer = comment_viewer.createInstance(options.type)
     viewer.saveConfig(options)
@@ -25,14 +25,14 @@ def main():
 
     facade.main(community = options.community, type = options.type, output = options.output, quiet = options.quiet)
 
-def _readInteractive():
+def _readInteractive(sysEncode):
     """
     """
-    communityId = raw_input(u'コミュニティID co:')
-    viewerType = raw_input(u'コメントビューワ[nwhois/ncv/anko]:')
+    communityId = raw_input(u'コミュニティID(ex. co317507):'.encode(sysEncode)).decode(sysEncode)
+    viewerType = raw_input(u'コメントビューワ[nwhois/ncv/anko]:'.encode(sysEncode)).decode(sysEncode)
 
-    if not re.match(ur'\d+', communityId):
-        print u'コミュニティIDの形式が間違っています。(ex. co317507)'
+    if not re.match(ur'co\d+', communityId):
+        print u'コミュニティIDの形式が間違っています。'.encode(sysEncode)
         sys.exit()
 
     return (communityId, viewerType)

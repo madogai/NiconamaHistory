@@ -29,13 +29,13 @@ NiconamaHistory.py -h
 
 Plugin
 ---
-niconama_history_pluginsにXXX.pyファイルを追加することでプラグインを追加できます。
+pluginsにXXX.pyファイルを追加することでプラグインを追加できます。
 
 作り方の詳細は後日記述します。
 
 Version
 ---
-0.1
+1.0.0
 
 Advertisement
 ---
