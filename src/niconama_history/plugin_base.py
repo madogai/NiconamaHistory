@@ -9,9 +9,11 @@ class PluginBase(object):
     """
     プラグインの基底クラスです。
     """
-    @property
-    def name(self):
-        return ''
+    def __init__(self):
+        pass
+
+    def ready(self, db):
+        pass
 
     def analyzeDay(self, rows):
         pass

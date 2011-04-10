@@ -1,7 +1,11 @@
 #-*- coding:utf-8
 from common_db import CommonDb
-from niconama_history import comment_viewer, output, plugin_loader
-import logging.config
+from niconama_history import comment_viewer, output, plugin_loader, plugin_base
+import inspect
+import itertools
+import logging
+import traceback
+logger = logging.getLogger('default')
 
 def main(**options):
     """
@@ -11,14 +15,9 @@ def main(**options):
     解析して
     出力します。
     """
-    logging.config.fileConfig("logging.conf")
-    logger = logging.getLogger("simpleExample")
-    if options.get('quiet'):
-        logger.setLevel(logging.WARNING)
-
-    loader = comment_viewer.createInstance(options.get('type'))
+    loader = comment_viewer.createInstance(options.get(u'type'))
     with CommonDb() as commonDb:
-        commentList = loader.loadComment(options.get('community'))
+        commentList = loader.loadComment(options.get(u'community'))
         commonDb.insertComment(commentList)
         logger.info(u'共通DBの構築が完了しました。')
 
@@ -31,24 +30,25 @@ def main(**options):
         logger.info(u'全期間を集計しています。')
         allCommentList = commonDb.selectAll()
 
-        plugins = map(lambda plugin: plugin.CommentFilter(commonDb), filter(lambda plugin: 'CommentFilter' in dir(plugin), plugin_loader.load_plugins('niconama_history_plugins')))
-
         history = {}
-        for plugin in plugins:
-            try:
-                logger.info(u'{0}プラグインで解析しています。'.format(plugin.__module__))
-                for date, messages in _analyze(dateCommentList=daysCommentList, analyzer=plugin, methodName='analyzeDay'):
-                    history.setdefault(date, {}).setdefault('day', []).extend(messages)
-                for date, messages in _analyze(dateCommentList=monthesCommentList, analyzer=plugin, methodName='analyzeMonth'):
-                    history.setdefault(date, {}).setdefault('month', []).extend(messages)
-                for date, messages in _analyze(dateCommentList=yearsCommentList, analyzer=plugin, methodName='analyzeYear'):
-                    history.setdefault(date, {}).setdefault('year', []).extend(messages)
-                for date, messages in _analyze(dateCommentList=allCommentList, analyzer=plugin, methodName='analyzeAll'):
-                    history.setdefault(date, {}).setdefault('all', []).extend(messages)
-            except Exception as exception:
-                logger.error(exception)
+        for plugin in plugin_loader.load_plugins(u'plugins'):
+            for plugin in filter(lambda member: issubclass(member, plugin_base.PluginBase) and member is not plugin_base.PluginBase ,zip(*inspect.getmembers(plugin, inspect.isclass))[1]):
+                try:
+                    pluginInstance = plugin()
+                    logger.info(u'{0}プラグインで解析しています。'.format(pluginInstance.__module__))
+                    pluginInstance.ready(commonDb)
+                    for date, messages in _analyze(dateCommentList=daysCommentList, analyzer=pluginInstance, methodName=u'analyzeDay'):
+                        history.setdefault(date, {}).setdefault(u'day', []).extend(messages)
+                    for date, messages in _analyze(dateCommentList=monthesCommentList, analyzer=pluginInstance, methodName=u'analyzeMonth'):
+                        history.setdefault(date, {}).setdefault(u'month', []).extend(messages)
+                    for date, messages in _analyze(dateCommentList=yearsCommentList, analyzer=pluginInstance, methodName=u'analyzeYear'):
+                        history.setdefault(date, {}).setdefault(u'year', []).extend(messages)
+                    for date, messages in _analyze(dateCommentList=allCommentList, analyzer=pluginInstance, methodName=u'analyzeAll'):
+                        history.setdefault(date, {}).setdefault(u'all', []).extend(messages)
+                except (ArithmeticError, AssertionError, AttributeError, EOFError, LookupError, NameError, SyntaxError, TypeError, ValueError):
+                    logger.error(traceback.format_exc())
 
-        with output.createInstance(options.get('output')) as out:
+        with output.createInstance(options.get(u'output')) as out:
             out.write(history)
 
 def _analyze(dateCommentList, analyzer, methodName):
@@ -60,12 +60,27 @@ def _analyze(dateCommentList, analyzer, methodName):
     for date, rows in dateCommentList:
         messages = analyzer.__getattribute__(methodName)(rows)
         if messages:
-            if isinstance(messages, str):
-                history.append((date, [messages]))
-            elif isinstance(messages, list):
-                history.append((date, messages))
+            if isinstance(messages, str) or isinstance(messages, unicode):
+                messages = [messages]
+
+            history.append((date, itertools.ifilter(_decoder, messages)))
 
     return history
 
+def _validatePlugin(plugin):
+    isPlugin = u'CommentFilter' in dir(plugin)
+    if isPlugin == False:
+        logger.warning(u'{0}にはCommentFilterクラスがありません。'.format(plugin.__name__))
+
+    return isPlugin
+
+def _decoder(message):
+    if isinstance(message, str):
+        return message.decode(u'utf-8')
+    elif isinstance(message, unicode):
+        return message
+    else:
+        return
+
 if __name__ == '__main__':
-    main({ 'type': 'nwhois', 'community': 'co317507', 'output': None })
+    main(dict(type = u'nwhois', community = u'co317507', output = None))

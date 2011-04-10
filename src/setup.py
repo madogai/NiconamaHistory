@@ -8,5 +8,5 @@ py2exe_options = {
 
 setup(
   options = {"py2exe": py2exe_options},
-  console = [{"script" : "NiconamaHistory.py" }],
+  console = [{"script" : "niconama_history.py" }],
   zipfile = None)

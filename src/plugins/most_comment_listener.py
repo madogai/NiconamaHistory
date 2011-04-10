@@ -11,14 +11,6 @@ class CommentFilter(PluginBase):
     """
     月毎の最も発言したリスナーを抽出するプラグインです。
     """
-
-    def __init__(self, db):
-        pass
-
-    @property
-    def name(self):
-        return 'MostCommentListener'
-
     def analyzeMonth(self, rows):
         userDict = defaultdict(int)
 

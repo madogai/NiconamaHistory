@@ -7,14 +7,6 @@ class CommentFilter(PluginBase):
     """
     放送開始日を抽出するプラグインです。
     """
-
-    def __init__(self, db):
-        PluginBase.__init__(self)
-
-    @property
-    def name(self):
-        return 'SeachEducation'
-
     def analyzeDay(self, rows):
         def replaceEducation(row):
             name = row.name if row.name else u'名無しさん'

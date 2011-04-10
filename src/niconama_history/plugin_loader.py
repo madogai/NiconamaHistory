@@ -1,9 +1,5 @@
 #-*- coding:utf-8
-'''
-Created on 2011/03/19
 
-@author: madguy
-'''
 import imp
 import os
 import re
@@ -26,7 +22,7 @@ def load_plugins(plugindir):
         pluginList = []
         for fileName in os.listdir(basepath):
             try:
-                matchObj = re.match(r'(^[a-zA-Z].*).py$', fileName)
+                matchObj = re.match(ur'(^[a-zA-Z].*).py$', fileName)
                 if matchObj:
                     module = load_module(matchObj.group(1), basepath)
                     pluginList.append(module)

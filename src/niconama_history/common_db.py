@@ -10,10 +10,10 @@ class CommonDb(object):
         メモリ上に共通DBを構築します。
         """
 
-        connect = sqlite3.connect(':memory:')
+        connect = sqlite3.connect(u':memory:')
         connect.text_factory = sqlite3.OptimizedUnicode
 
-        createDbSql = """
+        createDbSql = u"""
             CREATE TABLE comment (
                 community_id TEXT,
                 user_id TEXT,
@@ -50,11 +50,11 @@ class CommonDb(object):
         for communityId, userId, name, message, option, datetime in commentList:
             self.connect.execute(sqlBase, (communityId, userId, name, message, option, datetime))
 
-        self.connect.execute('CREATE INDEX datetime_index ON comment (datetime);')
+        self.connect.execute(u'CREATE INDEX datetime_index ON comment (datetime);')
         self.connect.commit()
 
     def selectAll(self):
-        sql = """
+        sql = u"""
             SELECT
                 community_id
                 ,user_id
@@ -70,19 +70,19 @@ class CommonDb(object):
         return [(datetime(9999,12,31), map(lambda comment: Row(*comment), self.connect.execute(sql)))]
 
     def selectYears(self):
-        terms = self._selectTerm('%Y')
+        terms = self._selectTerm(u'%Y')
         return self._selectDates(terms)
 
     def selectMonthes(self):
-        terms = self._selectTerm('%Y-%m')
+        terms = self._selectTerm(u'%Y-%m')
         return self._selectDates(terms)
 
     def selectDays(self):
-        terms = self._selectTerm('%Y-%m-%d')
+        terms = self._selectTerm(u'%Y-%m-%d')
         return self._selectDates(terms)
 
     def _selectTerm(self, termFormat):
-        sql = """
+        sql = u"""
             SELECT
                 strftime('{0}', datetime) AS date
             FROM
@@ -97,8 +97,7 @@ class CommonDb(object):
         return self.connect.execute(sql).fetchall()
 
     def _selectDates(self, terms):
-
-        sql = """
+        sql = u"""
             SELECT
                 community_id
                 ,user_id
@@ -125,14 +124,14 @@ class CommonDb(object):
         >>> instance._termToDate('2000-01-01')
         datetime.datetime(2000, 1, 1, 0, 0)
         """
-        if re.match('\d{4}$', term):
-            return datetime.strptime('{0}-12-31'.format(term), '%Y-%m-%d')
-        elif re.match('\d{4}-\d{2}$', term):
+        if re.match(u'\d{4}$', term):
+            return datetime.strptime(u'{0}-12-31'.format(term), u'%Y-%m-%d')
+        elif re.match(u'\d{4}-\d{2}$', term):
             (year, month) = term.split('-')
             dayCount = calendar.monthrange(int(year), int(month))[1]
             return datetime(int(year), int(month), dayCount)
         else:
-            return datetime.strptime(term, '%Y-%m-%d')
+            return datetime.strptime(term, u'%Y-%m-%d')
 
 class Row(object):
 

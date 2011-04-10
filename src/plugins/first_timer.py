@@ -10,9 +10,7 @@ class CommentFilter(PluginBase):
     """
     常連さんの出現を抽出するプラグインです。
     """
-
-    def __init__(self, db):
-        PluginBase.__init__(self)
+    def ready(self, db):
         sql = """
             SELECT
                 user_id
@@ -25,14 +23,10 @@ class CommentFilter(PluginBase):
                 user_id
                 ,name
             HAVING
-                count(user_id) > {}
+                count(user_id) > {0}
             ;
         """.format(1000)
         self.regularSet = set(db.connect.execute(sql).fetchall())
-
-    @property
-    def name(self):
-        return 'FirstTimer'
 
     def analyzeDay(self, rows):
         messages = []

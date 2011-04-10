@@ -11,13 +11,8 @@ class CommentFilter(PluginBase):
     コメントの統計を出力するプラグインです
     """
 
-    def __init__(self, db):
-        PluginBase.__init__(self)
+    def __init__(self):
         self.__flag = True
-
-    @property
-    def name(self):
-        return 'TotalComment'
 
     def analyzeAll(self, rows):
         return u'コメント数の総計は{0}件でした。'.format(len(rows))
