@@ -11,11 +11,11 @@ class CommentFilter(PluginBase):
     放送開始日を抽出するプラグインです。
     """
     def __init__(self):
-        self.__flag = True
+        self.firstDay = None
 
     def analyzeDay(self, date, rows):
-        if self.__flag:
-            self.__flag = False
+        if self.firstDay:
+            self.firstDay = date
             return u'放送を開始しました！'
 
 if __name__ == '__main__':
