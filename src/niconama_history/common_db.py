@@ -9,13 +9,13 @@ class CommonDb(object):
         """
         メモリ上に共通DBを構築します。
         """
-
         connect = sqlite3.connect(u':memory:')
         connect.text_factory = sqlite3.OptimizedUnicode
 
         createDbSql = u"""
             CREATE TABLE comment (
                 community_id TEXT,
+                live_id TEXT,
                 user_id TEXT,
                 name TEXT,
                 message TEXT,
@@ -37,18 +37,19 @@ class CommonDb(object):
         sqlBase = u"""
             INSERT INTO comment(
                 community_id
+                ,live_id
                 ,user_id
                 ,name
                 ,message
                 ,option
                 ,datetime
             ) VALUES
-                (?, ?, ?, ?, ?, ?)
+                (?, ?, ?, ?, ?, ?, ?)
             ;
         """
 
-        for communityId, userId, name, message, option, datetime in commentList:
-            self.connect.execute(sqlBase, (communityId, userId, name, message, option, datetime))
+        for comment in commentList:
+            self.connect.execute(sqlBase, comment)
 
         self.connect.execute(u'CREATE INDEX datetime_index ON comment (datetime);')
         self.connect.commit()
@@ -57,6 +58,7 @@ class CommonDb(object):
         sql = u"""
             SELECT
                 community_id
+                ,live_id
                 ,user_id
                 ,name
                 ,message
@@ -100,6 +102,7 @@ class CommonDb(object):
         sql = u"""
             SELECT
                 community_id
+                ,live_id
                 ,user_id
                 ,name
                 ,message
@@ -134,9 +137,9 @@ class CommonDb(object):
             return datetime.strptime(term, u'%Y-%m-%d')
 
 class Row(object):
-
-    def __init__(self, communityId, userId, name, message, option, datetime):
+    def __init__(self, communityId, liveId, userId, name, message, option, datetime):
         self.communityId = communityId
+        self.liveId = liveId
         self.userId = userId
         self.name = name
         self.message = message

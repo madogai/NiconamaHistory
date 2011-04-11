@@ -57,6 +57,7 @@ class Nwhois(CommentViewer):
         sql = u"""
             SELECT
                 chat.cid AS community_id
+                ,lid AS live_id
                 ,uid AS user_id
                 ,name
                 ,message
@@ -100,6 +101,7 @@ class NCV(CommentViewer):
         chatList = []
         for commentFile in commentLogFileList:
             parser = BeautifulSoup(open(os.path.join(commentLogFolder, commentFile), u'r'))
+            liveId = u'lv' + parser.find(u'livenum').renderContents().decode(u'utf-8')
             chatTagList =  parser.find(u'livecommentdataarray').findAll(u'chat', recursive=False)
             for chatTag in chatTagList:
                 userId = chatTag.get(u'user_id')
@@ -107,41 +109,56 @@ class NCV(CommentViewer):
                     continue
 
                 communityId = communityId
+                liveId = liveId
                 name = nameDict.get(userId)
                 message = chatTag.renderContents().decode(u'utf-8')
                 option = chatTag.get(u'mail')
                 unixtime = time.localtime(int(chatTag.get(u'date')))
                 date = (datetime.datetime(*unixtime[:-3]).strftime(u'%Y-%m-%d %H:%M:%S') if unixtime else None).decode(u'utf-8')
-                chatList.append((communityId, userId, name, message, option, date))
+                chatList.append((communityId, liveId, userId, name, message, option, date))
 
         return chatList
 
 class GissiriAnko(CommentViewer):
     def saveConfig(self, options):
         if options.path:
-            self.config.set(options.type, 'Comment', options.path)
+            self.config.set(options.type, u'Comment', options.path)
 
     def loadComment(self, communityId):
         def communityFilter(filePath):
-            parser = BeautifulSoup(open(os.path.join(filePath), 'r'))
-            return parser.find('communityid').renderContents() == communityId
+            commentParser = BeautifulSoup(open(os.path.join(filePath), u'r'))
+            return commentParser.find(u'communityid').renderContents() == communityId
 
-        logFolderPath = re.sub('{(\\w+?)}', lambda match: os.environ[match.group(1)], self.config.get('anko', 'Comment')).decode('utf-8')
-        liveInfoFilePathList = filter(lambda file: re.match(r'nico\d{8}_\d+_ticket\.xml$', file) , os.listdir(logFolderPath))
-        communityCommentFilePathList = map(lambda filePath: filePath.replace('ticket.xml', 'xml.txt'), filter(communityFilter, map(lambda name: os.path.join(logFolderPath, name), liveInfoFilePathList)))
+        logFolderPath = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'anko', u'Comment')).decode('utf-8')
+        liveInfoFilePathList = map(lambda name: os.path.join(logFolderPath, name), filter(lambda file: re.match(ur'nico\d{8}_\d+_ticket\.xml$', file) , os.listdir(logFolderPath)))
+        communityCommentFileList = map(lambda filePath: (filePath, filePath.replace(u'ticket.xml', u'xml.txt')), liveInfoFilePathList)
 
         chatList = []
-        for commentFile in communityCommentFilePathList:
-            parser = BeautifulSoup(open(os.path.join(logFolderPath, commentFile), 'r'))
-            chatTagList = parser.findAll(u'chat', attrs={'msgkind': 'message_msg'})
-            for chatTag in chatTagList:
-                communityId = communityId.decode('utf-8')
-                userId = chatTag.get(u'user').decode('utf-8')
-                name = chatTag.get(u'nickname').decode('utf-8')
-                message = chatTag.renderContents().decode('utf-8')
-                option = chatTag.get(u'mail').decode('utf-8')
-                date = chatTag.get(u'date').replace('/', '-').decode('utf-8')
-                chatList.append((communityId, userId, name, message, option, date))
+        for communityCommentFile in communityCommentFileList:
+            chatList.extend(self._parseComment(communityId, *communityCommentFile))
+
+        return chatList
+
+    def _parseComment(self, communityId, liveInfoFilePath, commentFilePath):
+        chatList = []
+        if not (os.path.exists(liveInfoFilePath) and os.path.exists(commentFilePath)):
+            return chatList
+
+        infoParser = BeautifulSoup(open(liveInfoFilePath, u'r'))
+        if not infoParser.find(u'communityid').renderContents() == communityId:
+            return chatList
+
+        commentParser = BeautifulSoup(open(commentFilePath, u'r'))
+        chatTagList = commentParser.findAll(u'chat', attrs={u'msgkind': u'message_msg'})
+        for chatTag in chatTagList:
+            communityId = communityId.decode(u'utf-8')
+            liveId = infoParser.find(u'liveid').renderContents().decode()
+            userId = chatTag.get(u'user').decode(u'utf-8')
+            name = chatTag.get(u'nickname').decode(u'utf-8')
+            message = chatTag.renderContents().decode(u'utf-8')
+            option = chatTag.get(u'mail').decode(u'utf-8')
+            date = chatTag.get(u'date').decode(u'utf-8').replace(u'/', u'-')
+            chatList.append((communityId, liveId, userId, name, message, option, date))
 
         return chatList
 
