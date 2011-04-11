@@ -1,9 +1,5 @@
 #-*- coding:utf-8
-'''
-Created on 2011/03/20
 
-@author: madguy
-'''
 from niconama_history.plugin_base import PluginBase
 
 class CommentFilter(PluginBase):

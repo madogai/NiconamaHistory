@@ -1,9 +1,4 @@
 #-*- coding:utf-8
-'''
-Created on 2011/03/20
-
-@author: madguy
-'''
 
 class PluginBase(object):
     """

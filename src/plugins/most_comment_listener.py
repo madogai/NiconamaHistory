@@ -1,9 +1,5 @@
 #-*- coding:utf-8
-'''
-Created on 2011/03/13
 
-@author: madguy
-'''
 from collections import defaultdict
 from niconama_history.plugin_base import PluginBase
 

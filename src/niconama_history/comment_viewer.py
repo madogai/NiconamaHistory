@@ -1,7 +1,7 @@
 #-*- coding:utf-8
 from ConfigParser import SafeConfigParser
 from argparse import ArgumentError
-from niconama_history.BeautifulSoup import BeautifulSoup
+from BeautifulSoup.BeautifulSoup import BeautifulSoup
 import datetime
 import os.path
 import re
