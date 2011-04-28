@@ -146,6 +146,16 @@ class Row(object):
         self.option = option
         self.datetime = datetime
 
+    def __eq__(self, other):
+        sameCommunityId = self.communityId == other.communityId
+        sameLiveId = self.liveId == other.liveId
+        sameUserId = self.userId == other.userId
+        sameName = self.name == other.name
+        sameMessage = self.message == other.message
+        sameOption = self.option == other.option
+        sameDatetime = self.datetime == other.datetime
+        return sameCommunityId and sameLiveId and sameUserId and sameName and sameMessage and sameOption and sameDatetime
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

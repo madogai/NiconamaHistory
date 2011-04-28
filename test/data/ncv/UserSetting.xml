@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserSetting xmlns:NCV="http://posite-c.jp/niconamacommentviewer/common/" xmlns="http://posite-c.jp/niconamacommentviewer/usersetting/">
+	<user community="co1" name="user1" time="1301068810">1</user>
+	<user community="co1" name="user2" time="1301068810">2</user>
+	<user community="co1" name="user3" time="1301068810">3</user>
+	<user community="co1" name="user4" time="1301068810">4</user>
+</UserSetting>

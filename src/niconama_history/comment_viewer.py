@@ -1,7 +1,7 @@
 #-*- coding:utf-8
+from BeautifulSoup.BeautifulSoup import BeautifulSoup
 from ConfigParser import SafeConfigParser
 from argparse import ArgumentError
-from BeautifulSoup.BeautifulSoup import BeautifulSoup
 import datetime
 import os.path
 import re
@@ -48,10 +48,13 @@ class Nwhois(CommentViewer):
         if options.path:
             self.config.set(options.type, u'Comment', options.path)
 
-    def loadComment(self, community):
-        self.sqlFile = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'nwhois', u'Comment'))
+    def loadComment(self, communityId):
+        sqlFilePath = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'nwhois', u'Comment'))
+        return self._loadComment(communityId, sqlFilePath)
 
-        if os.path.exists(self.sqlFile) == False:
+    def _loadComment(self, community, sqlFilePath):
+
+        if os.path.exists(sqlFilePath) == False:
             raise AttributeError(u'データベースファイルが存在しません。')
 
         sql = u"""
@@ -61,7 +64,7 @@ class Nwhois(CommentViewer):
                 ,uid AS user_id
                 ,name
                 ,message
-                ,mail AS optoin
+                ,CASE WHEN mail <> '' THEN mail ELSE null END AS optoin
                 ,datetime((date / 10000000) - 62135596800, 'unixepoch') AS insert_time
             FROM
                 chat
@@ -72,10 +75,12 @@ class Nwhois(CommentViewer):
             AND chat.cid = user.cid
             WHERE
                 chat.cid = '{}'
+            ORDER BY
+                chat.no
             ;
         """.format(community)
 
-        conn = sqlite3.connect(self.sqlFile)
+        conn = sqlite3.connect(sqlFilePath)
         chatList = conn.execute(sql).fetchall()
 
         return chatList
@@ -88,14 +93,12 @@ class NCV(CommentViewer):
             self.config.set(options.type, u'UserSetting', options.userSetting)
 
     def loadComment(self, communityId):
-        def loadUserSetting(communityId):
-            userFile = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'ncv', u'UserSetting'))
-            parser = BeautifulSoup(open(userFile, u'r'))
-            nameTagList = parser.findAll(u'user', attrs = { u'community': communityId, u'name': True } )
-            return dict(map(lambda tag: (tag.renderContents(), tag.get(u'name')), nameTagList))
-
-        nameDict = loadUserSetting(communityId)
+        userSettingFilePath = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'ncv', u'UserSetting'))
         commentLogFolder = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'ncv', u'Comment'))
+        return self._loadComment(communityId, userSettingFilePath, commentLogFolder)
+
+    def _loadComment(self, communityId, userSettingFilePath, commentLogFolder):
+        nameDict = self._loadUserSetting(communityId, userSettingFilePath)
         commentLogFileList = filter(lambda file: re.match(ur'ncvLog_lv\d+-{0}\.xml$'.format(communityId), file) , os.listdir(commentLogFolder))
 
         chatList = []
@@ -108,8 +111,6 @@ class NCV(CommentViewer):
                 if chatTag.get(u'user_id') == u'':
                     continue
 
-                communityId = communityId
-                liveId = liveId
                 name = nameDict.get(userId)
                 message = chatTag.renderContents().decode(u'utf-8')
                 option = chatTag.get(u'mail')
@@ -119,17 +120,22 @@ class NCV(CommentViewer):
 
         return chatList
 
+
+    def _loadUserSetting(self, communityId, userSettingFilePath):
+        parser = BeautifulSoup(open(userSettingFilePath, u'r'))
+        nameTagList = parser.findAll(u'user', attrs = { u'community': communityId, u'name': True } )
+        return dict(map(lambda tag: (tag.renderContents(), tag.get(u'name')), nameTagList))
+
 class GissiriAnko(CommentViewer):
     def saveConfig(self, options):
         if options.path:
             self.config.set(options.type, u'Comment', options.path)
 
     def loadComment(self, communityId):
-        def communityFilter(filePath):
-            commentParser = BeautifulSoup(open(os.path.join(filePath), u'r'))
-            return commentParser.find(u'communityid').renderContents() == communityId
-
         logFolderPath = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'anko', u'Comment')).decode('utf-8')
+        return self._loadComment(communityId, logFolderPath)
+
+    def _loadComment(self, communityId, logFolderPath):
         liveInfoFilePathList = map(lambda name: os.path.join(logFolderPath, name), filter(lambda file: re.match(ur'nico\d{8}_\d+_ticket\.xml$', file) , os.listdir(logFolderPath)))
         communityCommentFileList = map(lambda filePath: (filePath, filePath.replace(u'ticket.xml', u'xml.txt')), liveInfoFilePathList)
 
@@ -156,8 +162,12 @@ class GissiriAnko(CommentViewer):
             userId = chatTag.get(u'user').decode(u'utf-8')
             name = chatTag.get(u'nickname').decode(u'utf-8')
             message = chatTag.renderContents().decode(u'utf-8')
-            option = chatTag.get(u'mail').decode(u'utf-8')
-            date = chatTag.get(u'date').decode(u'utf-8').replace(u'/', u'-')
+            option = chatTag.get(u'mail').decode(u'utf-8') if chatTag.get(u'mail') != '' else None
+            date = re.sub(
+                ur'(\d{4})/(\d{1,2})/(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})',
+                lambda match: u'{0:04d}-{1:02d}-{2:02d} {3:02d}:{4:02d}:{5:02d}'.format(int(match.group(1)), int(match.group(2)), int(match.group(3)), int(match.group(4)), int(match.group(5)), int(match.group(6))),
+                chatTag.get(u'date')
+            ).decode(u'utf-8')
             chatList.append((communityId, liveId, userId, name, message, option, date))
 
         return chatList

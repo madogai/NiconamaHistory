@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NiconamaComment xmlns:NCV="http://posite-c.jp/niconamacommentviewer/common/" xmlns="http://posite-c.jp/niconamacommentviewer/commentlog/">
+	<LiveNum>3</LiveNum>
+	<WatchingMembersMaxNum>500</WatchingMembersMaxNum>
+	<ElapsedTime>00:15:05.0165078</ElapsedTime>
+	<LiveInfo>
+		<LiveTitle>モックアップ</LiveTitle>
+		<Broadcaster>host1</Broadcaster>
+		<IsMemberOnly>false</IsMemberOnly>
+		<TotalComer>0</TotalComer>
+		<CommunityInfo>
+			<CommunityNum>1</CommunityNum>
+			<EstablishmentDay>2011年02月01日</EstablishmentDay>
+			<OwnersID>1</OwnersID>
+			<Owner>host1</Owner>
+			<CommunityTitle>モックアップコミュニティ</CommunityTitle>
+			<Level>1</Level>
+			<ParticipationMembersNum>1</ParticipationMembersNum>
+			<ParticipationMembersMaxNum>1</ParticipationMembersMaxNum>
+			<Type>2</Type>
+		</CommunityInfo>
+	</LiveInfo>
+	<PlayerStatus>
+		<Stream>
+			<OwnerId>1</OwnerId>
+			<BaseTime>1301069856</BaseTime>
+			<OpenTime>1301069856</OpenTime>
+			<StartTime>1301069935</StartTime>
+			<DefaultCommunity>co1</DefaultCommunity>
+		</Stream>
+		<User>
+			<RoomLabel>co1</RoomLabel>
+			<RoomSeetNo>1</RoomSeetNo>
+			<MyNickname>host1</MyNickname>
+			<IsPremium>1</IsPremium>
+			<MyUserId>1</MyUserId>
+		</User>
+		<MS>
+			<Addr>msg104.live.nicovideo.jp</Addr>
+			<Port>2809</Port>
+			<Thread>1</Thread>
+		</MS>
+	</PlayerStatus>
+	<HeartBeat>
+		<WatchCount>1</WatchCount>
+		<CommentCount>1</CommentCount>
+		<FreeSlotNum />
+	</HeartBeat>
+	<LiveCommentDataArray>
+		<chat date="1296486001" no="1" premium="1" user_id="1" vpos="9200">message5</chat>
+		<chat date="1296486002" no="2" premium="1" user_id="3" mail="184" vpos="10185">message6</chat>
+	</LiveCommentDataArray>
+</NiconamaComment>

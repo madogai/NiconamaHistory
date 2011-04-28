@@ -12,7 +12,8 @@ def main():
         sysEncode = u'ascii'
 
     (options, args) = _loadOption()
-    if options.community is None:
+    isInteractiveMode = options.community is None
+    if isInteractiveMode:
         (communityId, viewerType) = _readInteractive(sysEncode)
         options.community = communityId
         options.type = viewerType
@@ -24,6 +25,8 @@ def main():
         logging.getLogger(u'default').setLevel(logging.WARNING)
 
     facade.main(community = options.community, type = options.type, output = options.output, quiet = options.quiet)
+    if isInteractiveMode:
+        raw_input(u'')
 
 def _readInteractive(sysEncode):
     """

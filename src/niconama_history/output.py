@@ -51,3 +51,6 @@ class File(StdOut):
                 self.handle.write(u'\n');
             self.handle.write(u'\n');
 
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

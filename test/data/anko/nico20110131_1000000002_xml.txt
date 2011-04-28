@@ -1,0 +1,4 @@
+﻿<chat date="2011/01/31 0:00:01" thread="1000000002" user="アンコちゃん" nickname="" no="" mail="" premium="" vpos="" msgkind="message_system" url="">放送情報で接続 lv1</chat>
+<chat date="2011/01/31 0:00:01" thread="1000000002" user="アンコちゃん" nickname="" no="" mail="" premium="" vpos="" msgkind="message_system" url="">connect実行 lv1</chat>
+<chat date="2011/01/31 0:00:01" thread="1000000002" user="1" nickname="user1" no="1" mail="" premium="1" vpos="151180" msgkind="message_msg" url="">message3</chat>
+<chat date="2011/01/31 0:00:02" thread="1000000002" user="3" nickname="user3" no="2" mail="184" premium="1" vpos="151180" msgkind="message_msg" url="">message4</chat>

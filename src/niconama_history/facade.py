@@ -67,13 +67,6 @@ def _analyze(dateCommentList, analyzer, methodName):
 
     return history
 
-def _validatePlugin(plugin):
-    isPlugin = u'CommentFilter' in dir(plugin)
-    if isPlugin == False:
-        logger.warning(u'{0}にはCommentFilterクラスがありません。'.format(plugin.__name__))
-
-    return isPlugin
-
 def _decoder(message):
     if isinstance(message, str):
         return message.decode(u'utf-8')

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LiveTicket>
+                 <LiveId>lv3</LiveId>
+                 <CommunityId>co1</CommunityId>
+                 <StartTime>2011-02-01T00:00:01</StartTime>
+                 <LocalStartTime>2011-02-01T00:00:01.0000000</LocalStartTime>
+                 <RoomLabel>co1</RoomLabel>
+                 <Address>192.168.0.1</Address>
+                 <Port>2809</Port>
+                 <Thread>1000000003</Thread>
+                 <LiveName>test</LiveName>
+                 <CommunityName>community1</CommunityName>
+                 <Caster>host1</Caster></LiveTicket>
