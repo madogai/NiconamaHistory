@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>python経験者向けプラグインの作り方 &mdash; NiconamaHistory v1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="top" title="NiconamaHistory v1.1.0 documentation" href="../index.html" />
+    <link rel="up" title="プラグインの作り方" href="index.html" />
+    <link rel="next" title="python未経験者向けプラグインの作り方" href="make_plugin_novice.html" />
+    <link rel="prev" title="プラグインの作り方" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="make_plugin_novice.html" title="python未経験者向けプラグインの作り方"
+             accesskey="N">次へ</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="プラグインの作り方"
+             accesskey="P">前へ</a> |</li>
+        <li><a href="../index.html">NiconamaHistory v1.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">プラグインの作り方</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="python">
+<h1>python経験者向けプラグインの作り方<a class="headerlink" href="#python" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>プラグインの概要<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="../niconama_history/plugin_base.html"><em>niconama_history.plugin_base.PluginBaseクラス</em></a> を継承するとプラグインとして認識されます。</li>
+<li>1つのモジュールには複数のプラグインを含める事ができます。</li>
+<li>プラグインを含んだモジュールをpluginsフォルダ配下に配置する事でプラグインとして認識します。</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>プラグインの実装方法<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><a class="reference internal" href="../niconama_history/plugin_base.html"><em>PluginBase</em></a> のメソッドをオーバーライドしてください。
+不要なメソッドをオーバーライドする必要はありません。</p>
+</div>
+<div class="section" id="comment">
+<h2>Commentクラス<a class="headerlink" href="#comment" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">PropertyName</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>communityId</td>
+<td>Text</td>
+</tr>
+<tr><td>liveId</td>
+<td>Text</td>
+</tr>
+<tr><td>userId</td>
+<td>Text</td>
+</tr>
+<tr><td>name</td>
+<td>Text</td>
+</tr>
+<tr><td>message</td>
+<td>Text</td>
+</tr>
+<tr><td>option</td>
+<td>Text</td>
+</tr>
+<tr><td>datetime</td>
+<td>Text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="comment-db">
+<h2>Comment(DBテーブル)<a class="headerlink" href="#comment-db" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">ColumnName</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>community_id</td>
+<td>Text</td>
+</tr>
+<tr><td>live_id</td>
+<td>Text</td>
+</tr>
+<tr><td>user_id</td>
+<td>Text</td>
+</tr>
+<tr><td>name</td>
+<td>Text</td>
+</tr>
+<tr><td>message</td>
+<td>Text</td>
+</tr>
+<tr><td>option</td>
+<td>Text</td>
+</tr>
+<tr><td>datetime</td>
+<td>Text</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">目次</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">python経験者向けプラグインの作り方</a><ul>
+<li><a class="reference internal" href="#id1">プラグインの概要</a></li>
+<li><a class="reference internal" href="#id2">プラグインの実装方法</a></li>
+<li><a class="reference internal" href="#comment">Commentクラス</a></li>
+<li><a class="reference internal" href="#comment-db">Comment(DBテーブル)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>前のトピックへ</h4>
+  <p class="topless"><a href="index.html"
+                        title="前の章へ">プラグインの作り方</a></p>
+  <h4>次のトピックへ</h4>
+  <p class="topless"><a href="make_plugin_novice.html"
+                        title="次の章へ">python未経験者向けプラグインの作り方</a></p>
+  <h3>このページ</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/plugins/make_plugin_advance.txt"
+           rel="nofollow">ソースコードを表示</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>クイック検索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="make_plugin_novice.html" title="python未経験者向けプラグインの作り方"
+             >次へ</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="プラグインの作り方"
+             >前へ</a> |</li>
+        <li><a href="../index.html">NiconamaHistory v1.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >プラグインの作り方</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, madguy.
+      このドキュメントは <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4 で生成しました。
+    </div>
+  </body>
+</html>

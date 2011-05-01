@@ -1,0 +1,4 @@
+plugin_loader モジュール
+========================
+
+.. automodule:: niconama_history.plugin_loader

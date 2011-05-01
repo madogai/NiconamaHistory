@@ -1,0 +1,9 @@
+@import 'default.css';
+
+div.sphinxsidebar input[type=text] {
+	width: 10em;
+}
+
+div.sphinxsidebar input[type=submit] {
+
+}

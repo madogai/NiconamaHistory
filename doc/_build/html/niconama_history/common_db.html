@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>common_db モジュール &mdash; NiconamaHistory v1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="top" title="NiconamaHistory v1.1.0 documentation" href="../index.html" />
+    <link rel="next" title="output モジュール" href="output.html" />
+    <link rel="prev" title="comment_viewer モジュール" href="comment_viewer.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="output.html" title="output モジュール"
+             accesskey="N">次へ</a> |</li>
+        <li class="right" >
+          <a href="comment_viewer.html" title="comment_viewer モジュール"
+             accesskey="P">前へ</a> |</li>
+        <li><a href="../index.html">NiconamaHistory v1.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-niconama_history.common_db">
+<span id="common-db"></span><h1>common_db モジュール<a class="headerlink" href="#module-niconama_history.common_db" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<dl class="class">
+<dt id="niconama_history.common_db.Comment">
+<em class="property">class </em><tt class="descclassname">niconama_history.common_db.</tt><tt class="descname">Comment</tt><big>(</big><em>communityId</em>, <em>liveId</em>, <em>userId</em>, <em>name</em>, <em>message</em>, <em>option</em>, <em>datetime</em><big>)</big><a class="headerlink" href="#niconama_history.common_db.Comment" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>コメントを格納するクラスです。</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="niconama_history.common_db.CommonDb">
+<em class="property">class </em><tt class="descclassname">niconama_history.common_db.</tt><tt class="descname">CommonDb</tt><a class="headerlink" href="#niconama_history.common_db.CommonDb" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>共通DB管理クラスです。</p>
+<dl class="method">
+<dt id="niconama_history.common_db.CommonDb.insertComment">
+<tt class="descname">insertComment</tt><big>(</big><em>commentList</em><big>)</big><a class="headerlink" href="#niconama_history.common_db.CommonDb.insertComment" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>コメントを共通DBに代入します。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>commentList</strong> (<em>list</em>) &#8211; コメントタプル(communityId, liveId, userId, name, message, option, date)のリスト</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="niconama_history.common_db.CommonDb.selectAll">
+<tt class="descname">selectAll</tt><big>(</big><big>)</big><a class="headerlink" href="#niconama_history.common_db.CommonDb.selectAll" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>全期間のコメントを取得します。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body">Rowクラスのリスト</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="niconama_history.common_db.CommonDb.selectDays">
+<tt class="descname">selectDays</tt><big>(</big><big>)</big><a class="headerlink" href="#niconama_history.common_db.CommonDb.selectDays" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>日毎のコメントを取得します。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body">Commentクラスのリスト</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="niconama_history.common_db.CommonDb.selectMonthes">
+<tt class="descname">selectMonthes</tt><big>(</big><big>)</big><a class="headerlink" href="#niconama_history.common_db.CommonDb.selectMonthes" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>月毎のコメントを取得します。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body">Commentクラスのリスト</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="niconama_history.common_db.CommonDb.selectYears">
+<tt class="descname">selectYears</tt><big>(</big><big>)</big><a class="headerlink" href="#niconama_history.common_db.CommonDb.selectYears" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>年毎のコメントを取得します。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body">Commentクラスのリスト</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>前のトピックへ</h4>
+  <p class="topless"><a href="comment_viewer.html"
+                        title="前の章へ">comment_viewer モジュール</a></p>
+  <h4>次のトピックへ</h4>
+  <p class="topless"><a href="output.html"
+                        title="次の章へ">output モジュール</a></p>
+  <h3>このページ</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/niconama_history/common_db.txt"
+           rel="nofollow">ソースコードを表示</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>クイック検索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="output.html" title="output モジュール"
+             >次へ</a> |</li>
+        <li class="right" >
+          <a href="comment_viewer.html" title="comment_viewer モジュール"
+             >前へ</a> |</li>
+        <li><a href="../index.html">NiconamaHistory v1.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, madguy.
+      このドキュメントは <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4 で生成しました。
+    </div>
+  </body>
+</html>

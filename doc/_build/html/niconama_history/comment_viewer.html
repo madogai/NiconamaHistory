@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>comment_viewer モジュール &mdash; NiconamaHistory v1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="top" title="NiconamaHistory v1.1.0 documentation" href="../index.html" />
+    <link rel="prev" title="Welcome to NiconamaHistory’s documentation!" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to NiconamaHistory’s documentation!"
+             accesskey="P">前へ</a> |</li>
+        <li><a href="../index.html">NiconamaHistory v1.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-niconama_history.comment_viewer">
+<span id="comment-viewer"></span><h1>comment_viewer モジュール<a class="headerlink" href="#module-niconama_history.comment_viewer" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<dl class="class">
+<dt id="niconama_history.comment_viewer.CommentViewer">
+<em class="property">class </em><tt class="descclassname">niconama_history.comment_viewer.</tt><tt class="descname">CommentViewer</tt><a class="headerlink" href="#niconama_history.comment_viewer.CommentViewer" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>コメントビューアパーサの基底クラスです。</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="niconama_history.comment_viewer.GissiriAnko">
+<em class="property">class </em><tt class="descclassname">niconama_history.comment_viewer.</tt><tt class="descname">GissiriAnko</tt><a class="headerlink" href="#niconama_history.comment_viewer.GissiriAnko" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#niconama_history.comment_viewer.CommentViewer" title="niconama_history.comment_viewer.CommentViewer"><tt class="xref py py-class docutils literal"><span class="pre">niconama_history.comment_viewer.CommentViewer</span></tt></a></p>
+<p>ギッシリアンコちゃん用のパーサクラスです。</p>
+<dl class="method">
+<dt id="niconama_history.comment_viewer.GissiriAnko.loadComment">
+<tt class="descname">loadComment</tt><big>(</big><em>communityId</em><big>)</big><a class="headerlink" href="#niconama_history.comment_viewer.GissiriAnko.loadComment" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ログフォルダからコメントファイルを探索して抽出します。
+コメントログのパスはコンフィグファイルから読み込みます。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first simple">
+<li><strong>communityId</strong> (<em>string</em>) &#8211; コミュニティID(coXXX)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body"><p class="first last">チャットのタプル(communityId, liveId, userId, name, message, option, date)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="niconama_history.comment_viewer.GissiriAnko.saveConfig">
+<tt class="descname">saveConfig</tt><big>(</big><em>options</em><big>)</big><a class="headerlink" href="#niconama_history.comment_viewer.GissiriAnko.saveConfig" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ギッシリアンコちゃんのコンフィグを上書きします。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (<em>object</em>) &#8211; オプション</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="niconama_history.comment_viewer.NCV">
+<em class="property">class </em><tt class="descclassname">niconama_history.comment_viewer.</tt><tt class="descname">NCV</tt><a class="headerlink" href="#niconama_history.comment_viewer.NCV" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#niconama_history.comment_viewer.CommentViewer" title="niconama_history.comment_viewer.CommentViewer"><tt class="xref py py-class docutils literal"><span class="pre">niconama_history.comment_viewer.CommentViewer</span></tt></a></p>
+<p>NiconamaCommentViewer用のパーサクラスです。</p>
+<dl class="method">
+<dt id="niconama_history.comment_viewer.NCV.loadComment">
+<tt class="descname">loadComment</tt><big>(</big><em>communityId</em><big>)</big><a class="headerlink" href="#niconama_history.comment_viewer.NCV.loadComment" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ログフォルダからコメントファイルを探索して抽出します。
+コメントログのパスはコンフィグファイルから読み込みます。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first simple">
+<li><strong>communityId</strong> (<em>string</em>) &#8211; コミュニティID(coXXX)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body"><p class="first last">チャットのタプル(communityId, liveId, userId, name, message, option, date)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="niconama_history.comment_viewer.NCV.saveConfig">
+<tt class="descname">saveConfig</tt><big>(</big><em>options</em><big>)</big><a class="headerlink" href="#niconama_history.comment_viewer.NCV.saveConfig" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ncvのコンフィグを上書きします。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (<em>object</em>) &#8211; オプション</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="niconama_history.comment_viewer.Nwhois">
+<em class="property">class </em><tt class="descclassname">niconama_history.comment_viewer.</tt><tt class="descname">Nwhois</tt><a class="headerlink" href="#niconama_history.comment_viewer.Nwhois" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <a class="reference internal" href="#niconama_history.comment_viewer.CommentViewer" title="niconama_history.comment_viewer.CommentViewer"><tt class="xref py py-class docutils literal"><span class="pre">niconama_history.comment_viewer.CommentViewer</span></tt></a></p>
+<p>Nwhoisのパーサクラスです。</p>
+<dl class="method">
+<dt id="niconama_history.comment_viewer.Nwhois.loadComment">
+<tt class="descname">loadComment</tt><big>(</big><em>communityId</em><big>)</big><a class="headerlink" href="#niconama_history.comment_viewer.Nwhois.loadComment" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>sqliteログからコメントを抽出します。
+コメントログのパスはコンフィグファイルから読み込みます。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first simple">
+<li><strong>communityId</strong> (<em>string</em>) &#8211; コミュニティID(coXXX)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body"><p class="first last">チャットのタプル(communityId, liveId, userId, name, message, option, date)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="niconama_history.comment_viewer.Nwhois.saveConfig">
+<tt class="descname">saveConfig</tt><big>(</big><em>options</em><big>)</big><a class="headerlink" href="#niconama_history.comment_viewer.Nwhois.saveConfig" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>nwhoisのコンフィグを上書きします。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (<em>object</em>) &#8211; オプション</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="niconama_history.comment_viewer.createInstance">
+<tt class="descclassname">niconama_history.comment_viewer.</tt><tt class="descname">createInstance</tt><big>(</big><em>type</em><big>)</big><a class="headerlink" href="#niconama_history.comment_viewer.createInstance" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ファクトリメソッドです。引数によって適切なコメントビューワのインスタンスを返します。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">パラメタ:</th><td class="field-body"><ul class="first simple">
+<li><strong>type</strong> (<em>unicode</em>) &#8211; パラメータ文字列。nwhois, ncv, ankoが指定できます。</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">戻り値:</th><td class="field-body"><p class="first last">コメントビューアパーサのインスタンス</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>前のトピックへ</h4>
+  <p class="topless"><a href="../index.html"
+                        title="前の章へ">Welcome to NiconamaHistory&#8217;s documentation!</a></p>
+  <h3>このページ</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/niconama_history/comment_viewer.txt"
+           rel="nofollow">ソースコードを表示</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>クイック検索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to NiconamaHistory’s documentation!"
+             >前へ</a> |</li>
+        <li><a href="../index.html">NiconamaHistory v1.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, madguy.
+      このドキュメントは <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4 で生成しました。
+    </div>
+  </body>
+</html>
