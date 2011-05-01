@@ -7,7 +7,7 @@ class _decoderTest(unittest.TestCase):
         message = 'hoge'
 
         # act
-        actual = facade._decoder(message)
+        actual = facade._decode(message)
 
         # assert
         self.assertEqual(u'hoge', actual)
@@ -17,7 +17,7 @@ class _decoderTest(unittest.TestCase):
         message = u'hoge'
 
         # act
-        actual = facade._decoder(message)
+        actual = facade._decode(message)
 
         # assert
         self.assertEqual(u'hoge', actual)
@@ -27,7 +27,7 @@ class _decoderTest(unittest.TestCase):
         message = 10
 
         # act
-        actual = facade._decoder(message)
+        actual = facade._decode(message)
 
         # assert
         self.assertIsNone(actual)

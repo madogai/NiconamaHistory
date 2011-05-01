@@ -21,7 +21,7 @@ class load_pluginsTest(unittest.TestCase):
         pluginDir = u'../plugins_test'
 
         # act
-        modules = plugin_loader.load_plugins(pluginDir)
+        modules = plugin_loader.load_modules(pluginDir)
         actual = map(lambda module: module.__name__, modules)
 
         # assert

@@ -31,20 +31,20 @@ class CommonDbTest(unittest.TestCase):
         # arrange
         expectedList = [
             (datetime.datetime(2011, 1, 1, 0, 0), [
-                common_db.Row(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
             ]),
             (datetime.datetime(2011, 1, 31, 0, 0), [
-                common_db.Row(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
-                common_db.Row(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
+                common_db.Comment(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
+                common_db.Comment(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
             ]),
             (datetime.datetime(2011, 2, 1, 0, 0), [
-                common_db.Row(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
-                common_db.Row(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
+                common_db.Comment(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
+                common_db.Comment(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
             ]),
             (datetime.datetime(2012, 1, 1, 0, 0), [
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
             ]),
         ]
 
@@ -63,18 +63,18 @@ class CommonDbTest(unittest.TestCase):
         # arrange
         expectedList = [
             (datetime.datetime(2011, 1, 31, 0, 0), [
-                common_db.Row(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
-                common_db.Row(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
-                common_db.Row(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
+                common_db.Comment(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
+                common_db.Comment(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
             ]),
             (datetime.datetime(2011, 2, 28, 0, 0), [
-                common_db.Row(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
-                common_db.Row(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
+                common_db.Comment(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
+                common_db.Comment(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
             ]),
             (datetime.datetime(2012, 1, 31, 0, 0), [
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
             ]),
         ]
 
@@ -93,16 +93,16 @@ class CommonDbTest(unittest.TestCase):
         # arrange
         expectedList = [
             (datetime.datetime(2011, 12, 31, 0, 0), [
-                common_db.Row(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
-                common_db.Row(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
-                common_db.Row(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
-                common_db.Row(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
-                common_db.Row(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
+                common_db.Comment(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
+                common_db.Comment(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
+                common_db.Comment(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
+                common_db.Comment(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
             ]),
             (datetime.datetime(2012, 12, 31, 0, 0), [
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
             ]),
         ]
 
@@ -121,14 +121,14 @@ class CommonDbTest(unittest.TestCase):
         # arrange
         expectedList = [
             (datetime.datetime(9999, 12, 31, 0, 0), [
-                common_db.Row(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
-                common_db.Row(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
-                common_db.Row(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
-                common_db.Row(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
-                common_db.Row(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
-                common_db.Row(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv1', u'1', u'user1', u'message1', None, u'2011-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv1', u'2', u'user2', u'message2', None, u'2011-01-01 00:00:02'),
+                common_db.Comment(u'1', u'lv2', u'1', u'user1', u'message3', None, u'2011-01-31 00:00:01'),
+                common_db.Comment(u'1', u'lv2', u'3', u'user3', u'message4', u'184', u'2011-01-31 00:00:02'),
+                common_db.Comment(u'1', u'lv3', u'1', u'user1', u'message5', None, u'2011-02-01 00:00:01'),
+                common_db.Comment(u'1', u'lv3', u'3', u'user3', u'message6', u'184', u'2011-02-01 00:00:02'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message7', None, u'2012-01-01 00:00:01'),
+                common_db.Comment(u'1', u'lv4', u'4', u'user4', u'message8', None, u'2012-01-01 00:00:02'),
             ]),
         ]
 

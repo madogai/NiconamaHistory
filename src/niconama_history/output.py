@@ -2,12 +2,21 @@
 import sys
 
 def createInstance(path=None):
+    """
+    出力を返します。
+
+    :param string path: ファイルパス
+    :returns: pathがある場合はファイル出力、無ければ標準出力を返します。
+    """
     if path:
         return File(path)
     else:
         return StdOut()
 
 class StdOut(object):
+    """
+    標準出力用の出力クラスです。
+    """
     def __enter__(self):
         self.handle = sys.stdout
         return self
@@ -23,6 +32,11 @@ class StdOut(object):
             print >> self.handle
 
     def write(self, history):
+        """
+        出力に歴史ドキュメントを書きだします。
+
+        :param dictionary history: key 日付, value メッセージのリスト
+        """
         for key in sorted(history.keys()):
             date = history.get(key)
             self._writePosts(u'{0}年{1}月{2}日'.format(key.year, key.month, key.day), date.get(u'day'))
@@ -32,6 +46,9 @@ class StdOut(object):
         print
 
 class File(StdOut):
+    """
+    ファイル出力用の出力クラスです。
+    """
     def __init__(self, path):
         self.path = path
 
@@ -54,3 +71,4 @@ class File(StdOut):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+

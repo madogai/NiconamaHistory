@@ -6,17 +6,22 @@ import re
 import sys
 
 def main():
+    """
+    メイン関数です。
+    ここからniconama_historyを実行します。
+    """
     try:
         sysEncode = sys.stdin.encoding
     except AttributeError:
         sysEncode = u'ascii'
 
-    (options, args) = _loadOption()
+    (options, args) = _parseOption()
     isInteractiveMode = options.community is None
     if isInteractiveMode:
-        (communityId, viewerType) = _readInteractive(sysEncode)
+        (communityId, viewerType, output) = _readInteractive(sysEncode)
         options.community = communityId
         options.type = viewerType
+        options.output = output
 
     viewer = comment_viewer.createInstance(options.type)
     viewer.saveConfig(options)
@@ -25,22 +30,34 @@ def main():
         logging.getLogger(u'default').setLevel(logging.WARNING)
 
     facade.main(community = options.community, type = options.type, output = options.output, quiet = options.quiet)
-    if isInteractiveMode:
+    if isInteractiveMode and not options.output:
         raw_input(u'')
 
 def _readInteractive(sysEncode):
     """
+    対話モードでオプション情報を受け取ります。
+
+    :param string sysEncode: システムエンコーディング
+    :returns: オプションのタプル(コミュニティID、コメントビューア種別、出力先)
     """
     communityId = raw_input(u'コミュニティID(ex. co317507):'.encode(sysEncode)).decode(sysEncode)
-    viewerType = raw_input(u'コメントビューワ[nwhois/ncv/anko]:'.encode(sysEncode)).decode(sysEncode)
+    viewerType = raw_input(u'コメントビューワ(nwhois/ncv/anko):'.encode(sysEncode)).decode(sysEncode)
+    output = raw_input(u'出力先(デフォルトは標準出力)[]'.encode(sysEncode)).decode(sysEncode)
 
     if not re.match(ur'co\d+', communityId):
         print u'コミュニティIDの形式が間違っています。'.encode(sysEncode)
         sys.exit()
 
-    return (communityId, viewerType)
+    if not viewerType in [u'nwhois', u'ncv', u'anko']:
+        print u'コメントビューアの指定が不正です。'.encode(sysEncode)
+        sys.exit()
 
-def _loadOption():
+    return (communityId, viewerType, output)
+
+def _parseOption():
+    """
+    オプションをパースします。
+    """
     optionParser = OptionParser()
     optionParser.add_option(u'-c', u'--community', help=u'コミュニティID')
     optionParser.add_option(u'-t', u'--type', default=u'nwhois', help=u'インポート元のコメントビューア。nwhois, ncv, ankoが指定可能')

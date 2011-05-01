@@ -1,6 +1,6 @@
 #-*- coding:utf-8
 from common_db import CommonDb
-from niconama_history import comment_viewer, output, plugin_loader, plugin_base
+from niconama_history import comment_viewer, output, module_loader, plugin_base
 import inspect
 import itertools
 import logging
@@ -10,10 +10,9 @@ logger = logging.getLogger('default')
 def main(**options):
     """
     メイン関数
-    各種コメビュログを読み込んで
-    共通DBにいれて
-    解析して
-    出力します。
+    各種コメビュログを読み込んで、共通DBにいれて、解析して、出力します。
+
+    :params dictionary options: オプションの辞書
     """
     loader = comment_viewer.createInstance(options.get(u'type'))
     with CommonDb() as commonDb:
@@ -31,11 +30,11 @@ def main(**options):
         allCommentList = commonDb.selectAll()
 
         history = {}
-        for plugin in plugin_loader.load_plugins(u'plugins'):
-            for plugin in filter(lambda member: issubclass(member, plugin_base.PluginBase) and member is not plugin_base.PluginBase ,zip(*inspect.getmembers(plugin, inspect.isclass))[1]):
+        for module in module_loader.load_modules(u'plugins'):
+            for plugin in filter(lambda member: issubclass(member, plugin_base.PluginBase) and member is not plugin_base.PluginBase ,zip(*inspect.getmembers(module, inspect.isclass))[1]):
                 try:
                     pluginInstance = plugin()
-                    logger.info(u'{0}プラグインで解析しています。'.format(pluginInstance.__module__))
+                    logger.info(u'{0}モジュールの、{1}プラグインで解析しています。'.format(pluginInstance.__module__, pluginInstance.__class__.__name__))
                     pluginInstance.ready(commonDb)
                     for date, messages in _analyze(dateCommentList=daysCommentList, analyzer=pluginInstance, methodName=u'analyzeDay'):
                         history.setdefault(date, {}).setdefault(u'day', []).extend(messages)
@@ -53,8 +52,7 @@ def main(**options):
 
 def _analyze(dateCommentList, analyzer, methodName):
     """
-    プラグインのメソッドを直接呼びだすとプラグインの実装によっては
-    strやlistが返ってこない事があるため
+    プラグインでコメントを解析します。
     """
     history = []
     for date, rows in dateCommentList:
@@ -63,17 +61,31 @@ def _analyze(dateCommentList, analyzer, methodName):
             if isinstance(messages, str) or isinstance(messages, unicode):
                 messages = [messages]
 
-            history.append((date, itertools.ifilter(_decoder, messages)))
+            history.append((date, itertools.ifilter(_decode, messages)))
 
     return history
 
-def _decoder(message):
+def _decode(message):
+    """
+    unicode文字列を返します。
+    引数が文字列でない場合空文字列を返します。
+
+    :returns: unicode文字列
+
+    >>> _decode('hoge')
+    u'hoge'
+    >>> _decode(u'hoge')
+    u'hoge'
+    >>> _decode(0)
+    u''
+    """
     if isinstance(message, str):
         return message.decode(u'utf-8')
     elif isinstance(message, unicode):
         return message
     else:
-        return
+        return u''
 
 if __name__ == '__main__':
-    main(dict(type = u'nwhois', community = u'co317507', output = None))
+    import doctest
+    doctest.testmod()

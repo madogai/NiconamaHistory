@@ -13,6 +13,9 @@ configFileName = u'niconama_history.conf'
 def createInstance(type):
     """
     ファクトリメソッドです。引数によって適切なコメントビューワのインスタンスを返します。
+
+    :param unicode type: パラメータ文字列。nwhois, ncv, ankoが指定できます。
+    :returns: コメントビューアパーサのインスタンス
     """
     instance = dict(nwhois=Nwhois, ncv=NCV, anko=GissiriAnko).get(type)
     if instance == None:
@@ -21,7 +24,15 @@ def createInstance(type):
     return instance()
 
 class CommentViewer(object):
+    """
+    コメントビューアパーサの基底クラスです。
+    """
     def __init__(self):
+        """
+        コンストラクタです。
+        コンフィグファイルを読み込みます。
+        コンフィグファイルが存在しない場合、生成します。
+        """
         if os.path.exists(configFileName) == False:
             self._initializeConfig()
 
@@ -29,6 +40,9 @@ class CommentViewer(object):
         self.config.read(configFileName)
 
     def _initializeConfig(self):
+        """
+        コンフィグファイルを生成します。
+        """
         config = r"""[nwhois]
 Comment={LOCALAPPDATA}\nwhois\data\database\log3.sqlite
 
@@ -44,16 +58,30 @@ Comment={USERPROFILE}\Documents\ギッシリアンコちゃん\log\
             handle.write(config)
 
 class Nwhois(CommentViewer):
+    """
+    Nwhoisのパーサクラスです。
+    """
     def saveConfig(self, options):
+        """
+        nwhoisのコンフィグを上書きします。
+
+        :param object options: オプション
+        """
         if options.path:
             self.config.set(options.type, u'Comment', options.path)
 
     def loadComment(self, communityId):
+        """
+        sqliteログからコメントを抽出します。
+        コメントログのパスはコンフィグファイルから読み込みます。
+
+        :param string communityId: コミュニティID(coXXX)
+        :returns: チャットのタプル(communityId, liveId, userId, name, message, option, date)
+        """
         sqlFilePath = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'nwhois', u'Comment'))
         return self._loadComment(communityId, sqlFilePath)
 
     def _loadComment(self, community, sqlFilePath):
-
         if os.path.exists(sqlFilePath) == False:
             raise AttributeError(u'データベースファイルが存在しません。')
 
@@ -86,13 +114,28 @@ class Nwhois(CommentViewer):
         return chatList
 
 class NCV(CommentViewer):
+    """
+    NiconamaCommentViewer用のパーサクラスです。
+    """
     def saveConfig(self, options):
+        """
+        ncvのコンフィグを上書きします。
+
+        :param object options: オプション
+        """
         if options.path:
             self.config.set(options.type, u'Comment', options.path)
         if options.user:
             self.config.set(options.type, u'UserSetting', options.userSetting)
 
     def loadComment(self, communityId):
+        """
+        ログフォルダからコメントファイルを探索して抽出します。
+        コメントログのパスはコンフィグファイルから読み込みます。
+
+        :param string communityId: コミュニティID(coXXX)
+        :returns: チャットのタプル(communityId, liveId, userId, name, message, option, date)
+        """
         userSettingFilePath = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'ncv', u'UserSetting'))
         commentLogFolder = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'ncv', u'Comment'))
         return self._loadComment(communityId, userSettingFilePath, commentLogFolder)
@@ -105,7 +148,7 @@ class NCV(CommentViewer):
         for commentFile in commentLogFileList:
             parser = BeautifulSoup(open(os.path.join(commentLogFolder, commentFile), u'r'))
             liveId = u'lv' + parser.find(u'livenum').renderContents().decode(u'utf-8')
-            chatTagList =  parser.find(u'livecommentdataarray').findAll(u'chat', recursive=False)
+            chatTagList = parser.find(u'livecommentdataarray').findAll(u'chat', recursive=False)
             for chatTag in chatTagList:
                 userId = chatTag.get(u'user_id')
                 if chatTag.get(u'user_id') == u'':
@@ -120,18 +163,32 @@ class NCV(CommentViewer):
 
         return chatList
 
-
     def _loadUserSetting(self, communityId, userSettingFilePath):
         parser = BeautifulSoup(open(userSettingFilePath, u'r'))
-        nameTagList = parser.findAll(u'user', attrs = { u'community': communityId, u'name': True } )
+        nameTagList = parser.findAll(u'user', attrs={ u'community': communityId, u'name': True })
         return dict(map(lambda tag: (tag.renderContents(), tag.get(u'name')), nameTagList))
 
 class GissiriAnko(CommentViewer):
+    """
+    ギッシリアンコちゃん用のパーサクラスです。
+    """
     def saveConfig(self, options):
+        """
+        ギッシリアンコちゃんのコンフィグを上書きします。
+
+        :param object options: オプション
+        """
         if options.path:
             self.config.set(options.type, u'Comment', options.path)
 
     def loadComment(self, communityId):
+        """
+        ログフォルダからコメントファイルを探索して抽出します。
+        コメントログのパスはコンフィグファイルから読み込みます。
+
+        :param string communityId: コミュニティID(coXXX)
+        :returns: チャットのタプル(communityId, liveId, userId, name, message, option, date)
+        """
         logFolderPath = re.sub(ur'{(\w+?)}', lambda match: os.environ[match.group(1)], self.config.get(u'anko', u'Comment')).decode('utf-8')
         return self._loadComment(communityId, logFolderPath)
 

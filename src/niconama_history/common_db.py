@@ -5,6 +5,9 @@ import re
 import sqlite3
 
 class CommonDb(object):
+    """
+    共通DB管理クラスです。
+    """
     def __enter__(self):
         """
         メモリ上に共通DBを構築します。
@@ -29,11 +32,16 @@ class CommonDb(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         """
-        データベースをクローズします。
+        共通DBをクローズします。
         """
         self.connect.close()
 
     def insertComment(self, commentList):
+        """
+        コメントを共通DBに代入します。
+
+        :param list commentList: コメントタプル(communityId, liveId, userId, name, message, option, date)のリスト
+        """
         sqlBase = u"""
             INSERT INTO comment(
                 community_id
@@ -55,6 +63,11 @@ class CommonDb(object):
         self.connect.commit()
 
     def selectAll(self):
+        """
+        全期間のコメントを取得します。
+
+        :returns: Rowクラスのリスト
+        """
         sql = u"""
             SELECT
                 community_id
@@ -69,21 +82,41 @@ class CommonDb(object):
             ;
         """
 
-        return [(datetime(9999,12,31), map(lambda comment: Row(*comment), self.connect.execute(sql)))]
+        return [(datetime(9999,12,31), map(lambda comment: Comment(*comment), self.connect.execute(sql)))]
 
     def selectYears(self):
+        """
+        年毎のコメントを取得します。
+
+        :returns: Commentクラスのリスト
+        """
         terms = self._selectTerm(u'%Y')
         return self._selectDates(terms)
 
     def selectMonthes(self):
+        """
+        月毎のコメントを取得します。
+
+        :returns: Commentクラスのリスト
+        """
         terms = self._selectTerm(u'%Y-%m')
         return self._selectDates(terms)
 
     def selectDays(self):
+        """
+        日毎のコメントを取得します。
+
+        :returns: Commentクラスのリスト
+        """
         terms = self._selectTerm(u'%Y-%m-%d')
         return self._selectDates(terms)
 
     def _selectTerm(self, termFormat):
+        """
+        指定された期間毎のリストを返します。
+
+        :returns: 日付を表したテキストのリスト
+        """
         sql = u"""
             SELECT
                 strftime('{0}', datetime) AS date
@@ -99,6 +132,11 @@ class CommonDb(object):
         return self.connect.execute(sql).fetchall()
 
     def _selectDates(self, terms):
+        """
+        指定した期間のコメントを取得します。
+
+        :returns: Commentクラスのリスト
+        """
         sql = u"""
             SELECT
                 community_id
@@ -115,10 +153,12 @@ class CommonDb(object):
             ;
         """
 
-        return map(lambda (term,): (self._termToDate(term), map(lambda comment: Row(*comment), self.connect.execute(sql.format(term)))), terms)
+        return map(lambda (term,): (self._termToDate(term), map(lambda comment: Comment(*comment), self.connect.execute(sql.format(term)))), terms)
 
     def _termToDate(self, term):
         """
+        期間を表した文字列を日付型に変換します。
+
         >>> instance = CommonDb()
         >>> instance._termToDate('2000')
         datetime.datetime(2000, 12, 31, 0, 0)
@@ -136,7 +176,10 @@ class CommonDb(object):
         else:
             return datetime.strptime(term, u'%Y-%m-%d')
 
-class Row(object):
+class Comment(object):
+    """
+    コメントを格納するクラスです。
+    """
     def __init__(self, communityId, liveId, userId, name, message, option, datetime):
         self.communityId = communityId
         self.liveId = liveId
